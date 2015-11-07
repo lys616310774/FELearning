@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>layout</title>
+
+  <style type="text/css">
+    body{
+        margin: 0px;
+    }
+    #container{
+        width: 100%;
+        height:950px;
+        background-color: #FFFFFF;
+    }
+    #header{
+        width: 100%;
+        height: 50px;
+        background-color: #FF0000;
+    }
+    #balence{
+        overflow: hidden;
+        width: 80%;
+        margin: 0 auto;
+        float: left;
+        position: relative;
+    }
+    #left,#middle{
+        margin-bottom: -10000px;
+        padding-bottom: 10000px;
+    }
+    #left{
+        width: 20%;
+        height: 900px;
+        background-color: #FFFF00;
+        float: left;
+    }
+    #middle{
+        width: 75%;
+        background-color: #FFE1FF;
+        float: left;
+        position: relative;
+        padding-right: 5%;
+    }
+    div#right{
+        width: 20%;
+        height: 20%;
+        background-color: #3A5FCD;
+        float: left;
+    }
+    .row{
+        width: 80px;
+        height: 100px;
+        background-color: #191970;
+        margin: 5px 10px 5px 5px;
+        float: left;
+    }
+    .row1{
+        height: 50px;
+    }
+    .flex{
+        width: 50px;
+        height: 300px;
+        position: fixed;
+        background: #548B54;
+        right: 21%;
+    }
+  </style>
+  </head>
+  <body>
+      <div id="container">
+          <div id="header">header</div>
+
+          <div id="balence">
+          <div id="left">left</div>
+
+          <div id="middle">
+              <div class="row">
+              </div>
+              <div class="row row1">
+              </div>
+              <div class="row">
+              </div>
+              <div class="row row1">
+              </div>
+              <div class="row">
+              </div>
+              <div class="row row1">
+              </div>
+              <div class="row">
+              </div>
+              <div class="row">
+              </div>
+              <div class="row">
+              </div>
+              <div class="row row1">
+              </div>
+              <div class="row">
+              </div>
+              <div class="row row1">
+              </div>
+              <div class="flex">
+                right-block
+            </div>
+          </div>
+          </div>
+
+          <div id="right">right</div>
+      </div>
+  </body>
+  </html>
