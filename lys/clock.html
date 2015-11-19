@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>canvas clock</title>
+    <style type="text/css">
+    .clock-inner{
+        width: 400px;
+        margin: 0px auto;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="clock-inner">
+        <canvas id="clock" width="400" height="400"></canvas>
+    </div>
+    <script type="text/javascript">
+        (function(doc){
+            var can = doc.getElementById('clock');
+            if(can.getContext){
+                var con=can.getContext("2d");
+                con.beginPath();//开始绘制
+                con.translate(200,200);//
+                //绘制外圆
+                con.arc(0,0,199,0,Math.PI*2,false);//画圆的语法：水平坐标，垂直坐标，半径，圆周起始位置，弧长（没有*2的是半圆），true为顺时针、false为逆
+                con.lineWidth =2;
+                con.stroke();//绘制只有边框没有填充的图形，fill绘制填充的
+
+                // 绘制内圆
+                con.moveTo(190,0);//确定画的第二个圆的起点坐标
+                con.arc(0,0,190,0,Math.PI*2,false);
+                con.lineWidth =1;
+                con.strokeStyle = '#000';
+                con.stroke();
+
+                //时钟的刻度盘数字
+                con.font="bold 16px Arial";
+                con.textAlign="center";
+                con.textBaseline="middle";//当前绘制的文本基线
+                con.fillText("12",0,-178);
+                con.fillText("9",-178,0);
+                con.fillText("6",0,178);
+                con.fillText("3",178,0);
+               
+                //时钟的刻度盘
+                function canvasLines(){
+                    var len=180;
+                    for(i=0;i<60;i++){
+                        con.beginPath;
+                        //判断刻度为长还是短
+                        if(i%5==0){
+                            con.lineWidth=2;
+                            len=180;
+                        }
+                        else{
+                            con.lineWidth=1;
+                            len=184;
+                        }
+                    var beginDeg=transNumber(i);//总共60个刻度，将每个刻度转换成角度
+                    beginPot=position(len,beginDeg);//确定画线初始点坐标（len的不同代表长度不同）
+                    endPot=position(190,beginDeg);//确定画线结束点坐标
+                    con.moveTo(beginPot.x,beginPot.y);//从初始点坐标开始到结束点坐标画一条直线
+                    con.lineTo(endPot.x,endPot.y);
+                    con.stroke();
+                    }
+                }
+
+                //将数字转换成角度
+                function transNumber(num){
+                    return ((num*6-90)*0.017453293);
+                }
+                //求点坐标
+                function position(len,deg){
+                    return{
+                        x:len*Math.cos(deg),
+                        y:len*Math.sin(deg)
+                    }
+                }                
+                canvasLines();
+
+                //获取当前时间
+                var d=new Date();
+                var time={};
+                time.H=d.getHours()%12;
+                time.M=d.getMinutes();
+                time.S=d.getSeconds();
+
+                //判断时间大小，获取精确时间
+                function getTime(){
+                    time.S++;
+                    if(time.S>59){
+                        time.S=0;
+                        time.M++;
+                        if(time.M>59){
+                            time.M=0;
+                            time.H++;
+                            if(time.H>11){
+                                time.H=0;
+                            }
+                        }
+                    }
+                    TimesLines();
+                }
+
+                //画出当前时间的时针分针秒针，并随时变换
+                function TimesLines(){
+                    //分别求分秒时针的角度和坐标点
+                    var sDeg=transNumber(time.S),
+                    mDeg=transNumber(time.M),
+                    hDeg=transNumber(time.H*5+Math.floor(time.M/12)),//math.floor是求一个浮点数的地板，即求一个接近它的整数，值小于或等于这个浮点数
+                    sPot=position(160,sDeg),
+                    mPot=position(140,mDeg),
+                    hPot=position(120,hDeg);
+                    //画一个颜色为白色的半径为秒针的圆
+                    console.log(time.S,sDeg,sPot);//方便调试js的，可以看到页面中输出的内容并且不影响页面的正常操作
+                    con.beginPath();
+                    con.moveTo(150,0);
+                    con.arc(0,0,160,0,Math.PI*2,false);
+                    con.fillStyle="#fff";
+                    con.fill();
+                    //时针
+                    con.beginPath();
+                    con.moveTo(0,0);
+                    con.lineTo(hPot.x,hPot.y);
+                    con.lineWidth=4;
+                    con.stroke();
+                    //分针
+                    con.moveTo(0,0);
+                    con.lineTo(mPot.x,mPot.y);
+                    con.lineWidth=2;
+                    con.stroke();
+                    //秒针
+                    con.moveTo(0,0);
+                    con.lineTo(sPot.x,sPot.y);
+                    con.lineWidth=1;
+                    con.stroke();
+                }
+                //setTimeout用于在指定的毫秒数后调用函数或计算表达式，在这里即一秒（1000毫秒）后执行
+                setTimeout(function(){
+                    getTime();
+                    setTimeout(arguments.callee,1000);//内部又调用了setTimeout执行当前函数（argument代表正在执行的函数和调用它函数的参数），callee返回正在执行的function对象
+                },1000);
+               
+     }
+})(document);
+    </script>
+</body>
+
+</html>
