@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>url获取</title>
+</head>
+<body>
+
+    <script type="text/javascript">
+        function getParam(url){
+            var index0=url.indexOf("?");//获取？字符的所在的位置
+            url=url.substr(index0+1);//从index+1的位置开始取字符串取到结尾
+            var arr=new Array();//创建一个数组
+            arr=url.split("&");//将得到参数分离并将其存入数组中
+
+            var str="{";//Json格式
+            //将参数数组转换成JSON数据
+            for(var i=0;i<arr.length;i++){
+                if(i<arr.length-1){
+                    var index1=arr[i].indexOf("=");//截取=字符的位置
+                    var index2=arr[i].indexOf("=");
+                    //判断最后一个参数是否有值
+                    if(index1==-1){
+                        str+=","+"\""+arr[i]+"\""+":"+"\""+"\"";
+                        continue;
+                    }
+                    var key1=arr[i].substr(0,index1);
+                    var key2=arr[i+1].substr(0,index2);
+                    var str1=",";
+                    //如果是第一个就没有逗号
+                    if(i==0){
+                            str1="";
+                        }
+                    if(key1==key2){
+                        var val1=arr[i].substr(index1+1);
+                        var val2=arr[i+1].substr(index2+1);
+                        str+=str1+key1+":["+val1+","+val2+"]";
+                        i++;
+                    }
+                    else{
+                        var val=arr[i].substr(index1+1);
+                        str+=str1+key1+":"+val;
+                    }
+                    
+                }
+                else{
+                    var index=arr[i].indexOf("=");//截取=字符的位置
+                    //判断最后一个参数是否有值
+                    if(index==-1){
+                        str+=","+"\""+arr[i]+"\""+":"+"\""+"\"";
+                        continue;
+                    }
+                    var key=arr[i].substr(0,index);
+                    var str1=",";
+                    //如果是第一个就没有逗号
+                    if(i==0){
+                            str1="";
+                        }                    
+                    var val=arr[i].substr(index+1);
+                    str+=str1+key+":"+"\""+val+"\""+"}";
+            }
+         }
+         alert(str);        
+    }
+        getParam("https://book.douban.com/subject/10546125/?a=1&a=2&b=2&c=ccc");
+    </script>
+
+</body>
+</html>
